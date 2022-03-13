@@ -1,0 +1,46 @@
+<%- include('partial/header'); %>
+
+<label id="table"><%= table %></label>
+
+<p>Please select menus and confirm your order</p>
+
+<input class="searchbar" type="text" placeholder="Search for a menu">
+
+<body>
+    <form action="/sauce" method="get">
+    <div class="row user">
+        <div class="column col-md-6">
+
+            <div class="row"> 
+                <div class="column col-md-3 col-xs-3 menubtn"><button id="menubtn" formaction="/maindish">Main</button></div>
+                <div class="column col-md-3 col-xs-3 menubtn"><button id="menubtn" formaction="/sidedish">Side</button></div>
+                <div class="column col-md-3 col-xs-3 menubtn"><button id="menubtn" disabled="true">Sauce</button></div>
+                <div class="column col-md-3 col-xs-3 menubtn"><button id="menubtn" formaction="/drink">Drink</button></div>
+            </div>
+
+            <%  sauceMenus.forEach(function(e){ %>
+                <div class="menu row">
+                    <div class="column col-md-6">
+                        <img id="menu" src="<%= e.imgsrc %>">
+                    </div>
+                    <div class="column col-md-6">
+                        <label class="name"><%= e.name %></label>
+                        <label class="description"><%= e.description %></label>
+                        <label class="price"><%= e.price %>B</label>
+                        <button id="add" type="submit" name="add" value="<%=e.name%>">Add</button>
+                    </div>
+                </div>
+            <% }); %>
+
+        </div>
+
+        <div class="column col-md-2" id="selected">
+            <p class="title">Selected</p>
+        </div>
+
+        <div class="column col-md-4" id="orderlist">
+            <p class="title">Order List</p>
+        </div>
+    </div>
+</form>
+</body>
