@@ -272,12 +272,20 @@ app.post("/maindish", function (req, res) {
                     order: result
                 });
                 List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
-                    if (!err) 
-                      res.redirect("/maindish");
+                    if (err) 
+                        console.log(err);
                 });
             }
         });
     });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    res.redirect("/maindish");
+
 });
 
 app.post("/sidedish", function (req, res) {
@@ -293,14 +301,20 @@ app.post("/sidedish", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
-                List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
-                    if (!err) 
-                      res.redirect("/sidedish");
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (err) 
+                        console.log(err);
                 });
-                db.close();
             }
         });
     });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    res.redirect("/sidedish");
 });
 
 app.post("/sauce", function (req, res) {
@@ -316,14 +330,20 @@ app.post("/sauce", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
-                List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
-                    if (!err) 
-                      res.redirect("/sauce");
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (err) 
+                        console.log(err);
                 });
-                db.close();
             }
         });
     });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    res.redirect("/sauce");
 });
 
 app.post("/drink", function (req, res) {
@@ -339,14 +359,20 @@ app.post("/drink", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
-                List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
-                    if (!err) 
-                      res.redirect("/drink");
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (err) 
+                        console.log(err);
                 });
-                db.close();
             }
         });
     });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    res.redirect("/drink");
 });
 
 app.listen(8800, function() {
