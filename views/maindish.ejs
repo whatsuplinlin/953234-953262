@@ -7,7 +7,7 @@
 <input class="searchbar" type="text" name="search" placeholder="Search for a menu">
 
 <body>
-    <form action="/maindish" method="get">
+    <form action="/maindish" method="post">
     <div class="row user">
 
         <div class="column col-md-6">
@@ -37,6 +37,20 @@
 
         <div class="column col-md-2" id="selected">
             <p class="title">Selected</p>
+
+            <% for (var i = 0; i < orderLists.length; i++) { %>
+                <div class="list">
+                    <label id="name"><%= orderLists[i].name %></label>
+                    <label id="price"><%= orderLists[i].price %>B</label>
+                    <button id="remove" type="submit" name="remove" value="<%= orderLists[i].name %>">remove</button>
+                </div>
+            <% } %>
+                
+            <% if (orderLists.length > 0) { %>
+                <textarea id="request" type="text" name="request" placeholder="Type your request"></textarea>
+            <button id="confirm" type="submit" name="confirm">confirm</button>
+            <% } %>
+
         </div>
 
         <div class="column col-md-4" id="orderlist">

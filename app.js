@@ -171,7 +171,17 @@ app.get('/maindish', function(req, res) {
             });
             res.redirect("/maindish");
         } else {
-            res.render('maindish', { table: selectedTable, mainMenus: main });
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('maindish', { table: selectedTable, mainMenus: main, orderLists: order[0].order });
+                    }
+                });
+            });
         }
     });
 })
@@ -185,7 +195,17 @@ app.get('/sidedish', function(req, res) {
             });
             res.redirect("/sidedish");
         } else {
-            res.render('sidedish', { table: selectedTable, sideMenus: side });
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('sidedish', { table: selectedTable, sideMenus: side, orderLists: order[0].order });
+                    }
+                });
+            });
         }
     });
 })
@@ -199,7 +219,17 @@ app.get('/sauce', function(req, res) {
             });
             res.redirect("/sauce")
         } else {
-            res.render('sauce', { table: selectedTable, sauceMenus: sauce });
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('sauce', { table: selectedTable, sauceMenus: sauce, orderLists: order[0].order });
+                    }
+                });
+            });
         }
     });
 })
@@ -213,10 +243,111 @@ app.get('/drink', function(req, res) {
             });
             res.redirect("/drink")
         } else {
-            res.render('drink', { table: selectedTable, drinkMenus: drink });
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('drink', { table: selectedTable, drinkMenus: drink, orderLists: order[0].order });
+                    }
+                });
+            });
         }
     });
 })
+
+app.post("/maindish", function (req, res) {
+    var newItemName = (req.body.add);
+    MongoClient.connect(url, function(err, db) {
+        var dataBase = db.db("cluckcluckDB");
+        var query = { name: newItemName };
+        dataBase.collection("mains").find(query).toArray(function (err, result) {
+            if (err) {
+                console.log(err)
+            } else {
+                const newItem = new List({
+                    table: selectedTable,
+                    order: result
+                });
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (!err) 
+                      res.redirect("/maindish");
+                });
+            }
+        });
+    });
+});
+
+app.post("/sidedish", function (req, res) {
+    var newItemName = (req.body.add);
+    MongoClient.connect(url, function(err, db) {
+        var dataBase = db.db("cluckcluckDB");
+        var query = { name: newItemName };
+        dataBase.collection("sides").find(query).toArray(function (err, result) {
+            if (err) {
+                console.log(err)
+            } else {
+                const newItem = new List({
+                    table: selectedTable,
+                    order: result
+                });
+                List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
+                    if (!err) 
+                      res.redirect("/sidedish");
+                });
+                db.close();
+            }
+        });
+    });
+});
+
+app.post("/sauce", function (req, res) {
+    var newItemName = (req.body.add);
+    MongoClient.connect(url, function(err, db) {
+        var dataBase = db.db("cluckcluckDB");
+        var query = { name: newItemName };
+        dataBase.collection("sauces").find(query).toArray(function (err, result) {
+            if (err) {
+                console.log(err)
+            } else {
+                const newItem = new List({
+                    table: selectedTable,
+                    order: result
+                });
+                List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
+                    if (!err) 
+                      res.redirect("/sauce");
+                });
+                db.close();
+            }
+        });
+    });
+});
+
+app.post("/drink", function (req, res) {
+    var newItemName = (req.body.add);
+    MongoClient.connect(url, function(err, db) {
+        var dataBase = db.db("cluckcluckDB");
+        var query = { name: newItemName };
+        dataBase.collection("drinks").find(query).toArray(function (err, result) {
+            if (err) {
+                console.log(err)
+            } else {
+                const newItem = new List({
+                    table: selectedTable,
+                    order: result
+                });
+                List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
+                    if (!err) 
+                      res.redirect("/drink");
+                });
+                db.close();
+            }
+        });
+    });
+});
 
 app.listen(8800, function() {
     console.log("Server started on port 8800");
