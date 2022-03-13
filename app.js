@@ -260,6 +260,7 @@ app.get('/drink', function(req, res) {
 
 app.post("/maindish", function (req, res) {
     var newItemName = (req.body.add);
+    var deleteItem = (req.body.remove);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -289,6 +290,7 @@ app.post("/maindish", function (req, res) {
 });
 
 app.post("/sidedish", function (req, res) {
+    var deleteItem = (req.body.remove);
     var newItemName = (req.body.add);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
@@ -319,6 +321,7 @@ app.post("/sidedish", function (req, res) {
 
 app.post("/sauce", function (req, res) {
     var newItemName = (req.body.add);
+    var deleteItem = (req.body.remove);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -348,6 +351,7 @@ app.post("/sauce", function (req, res) {
 
 app.post("/drink", function (req, res) {
     var newItemName = (req.body.add);
+    var deleteItem = (req.body.remove);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
