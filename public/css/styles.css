@@ -1,0 +1,47 @@
+body {
+    background-color: #E9D8A6;
+}
+
+.header {
+    width: 100%;
+    height: 150px;
+    line-height: 150px;
+    background-color: #ee9b00;
+    color: black;
+    font-family: "Lilita One", serif;
+    font-size: 55px;
+    text-align: center;
+    margin: 0;
+}
+
+.column #userbtn, #kitchenbtn, a, a:hover {
+    width: 200px;
+    height: 50px;
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    border: none;
+    text-decoration: none;
+}
+
+#userbtn {
+    background-color: #881F1B;
+}
+
+#kitchenbtn {
+    background-color: #1D7906;
+}
+
+.column #img {
+    display: block;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.column .center {
+    display: block;
+    margin: auto;
+    margin-top: 100px;
+}
