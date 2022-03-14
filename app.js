@@ -34,6 +34,7 @@ const Side = mongoose.model("side", menuSchema);
 const Sauce = mongoose.model("sauce", menuSchema);
 const Drink = mongoose.model("drink", menuSchema);
 const List = mongoose.model("list", listSchema);
+const Order = mongoose.model("orderlist", listSchema);
 
 const main1 = new Main({
     name: "Fried Chicken",
@@ -174,11 +175,11 @@ app.get('/maindish', function(req, res) {
             MongoClient.connect(url, function(err, db) {
                 var dataBase = db.db("cluckcluckDB");
             
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
                     if (err) {
                         console.log(err)
                     } else {
-                        res.render('maindish', { table: selectedTable, mainMenus: main, orderLists: order[0].order });
+                        res.render('maindish', { table: selectedTable, mainMenus: main, orderLists: orders[0].order });
                     }
                 });
             });
@@ -198,11 +199,11 @@ app.get('/sidedish', function(req, res) {
             MongoClient.connect(url, function(err, db) {
                 var dataBase = db.db("cluckcluckDB");
             
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
                     if (err) {
                         console.log(err)
                     } else {
-                        res.render('sidedish', { table: selectedTable, sideMenus: side, orderLists: order[0].order });
+                        res.render('sidedish', { table: selectedTable, sideMenus: side, orderLists: orders[0].order });
                     }
                 });
             });
@@ -222,11 +223,11 @@ app.get('/sauce', function(req, res) {
             MongoClient.connect(url, function(err, db) {
                 var dataBase = db.db("cluckcluckDB");
             
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
                     if (err) {
                         console.log(err)
                     } else {
-                        res.render('sauce', { table: selectedTable, sauceMenus: sauce, orderLists: order[0].order });
+                        res.render('sauce', { table: selectedTable, sauceMenus: sauce, orderLists: orders[0].order });
                     }
                 });
             });
@@ -246,87 +247,11 @@ app.get('/drink', function(req, res) {
             MongoClient.connect(url, function(err, db) {
                 var dataBase = db.db("cluckcluckDB");
             
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
                     if (err) {
                         console.log(err)
                     } else {
-                        res.render('drink', { table: selectedTable, drinkMenus: drink, orderLists: order[0].order });
-                    }
-                });
-            });
-        }
-    });
-})
-
-app.post("/maindish", function (req, res) {
-    var newItemName = (req.body.add);
-})
-
-app.get('/sidedish', function(req, res) {
-    Side.find({}, function (err, side) {
-        if (side.length === 0) {
-            Side.insertMany(sidedish, function(err) {
-                if (err)
-                    console.log(err);
-            });
-            res.redirect("/sidedish");
-        } else {
-            MongoClient.connect(url, function(err, db) {
-                var dataBase = db.db("cluckcluckDB");
-            
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        res.render('sidedish', { table: selectedTable, sideMenus: side, orderLists: order[0].order });
-                    }
-                });
-            });
-        }
-    });
-})
-
-app.get('/sauce', function(req, res) {
-    Sauce.find({}, function (err, sauce) {
-        if (sauce.length === 0) {
-            Sauce.insertMany(saucemenu, function(err) {
-                if (err)
-                    console.log(err);
-            });
-            res.redirect("/sauce")
-        } else {
-            MongoClient.connect(url, function(err, db) {
-                var dataBase = db.db("cluckcluckDB");
-            
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        res.render('sauce', { table: selectedTable, sauceMenus: sauce, orderLists: order[0].order });
-                    }
-                });
-            });
-        }
-    });
-})
-
-app.get('/drink', function(req, res) {
-    Drink.find({}, function (err, drink) {
-        if (drink.length === 0) {
-            Drink.insertMany(drinkmenu, function(err) {
-                if (err)
-                    console.log(err);
-            });
-            res.redirect("/drink")
-        } else {
-            MongoClient.connect(url, function(err, db) {
-                var dataBase = db.db("cluckcluckDB");
-            
-                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        res.render('drink', { table: selectedTable, drinkMenus: drink, orderLists: order[0].order });
+                        res.render('drink', { table: selectedTable, drinkMenus: drink, orderLists: orders[0].order });
                     }
                 });
             });
@@ -338,6 +263,7 @@ app.post("/maindish", function (req, res) {
     var newItemName = (req.body.add);
     var deleteItem = (req.body.remove);
     var orderConfirm = (req.body.confirm);
+    
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -350,19 +276,12 @@ app.post("/maindish", function (req, res) {
                     order: result
                 });
                 List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
-                    if (!err) 
-                      res.redirect("/maindish");
                     if (err) 
                         console.log(err);
                 });
             }
         });
     });
-
-});
-
-app.post("/sidedish", function (req, res) {
-    var newItemName = (req.body.add);
 
     List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
         if (err) 
@@ -381,6 +300,17 @@ app.post("/sidedish", function (req, res) {
                     for (i = 0; i < orders[0].order.length; i++) {
                         total += orders[0].order[i].price;
                     }
+
+                    const newOrder = new List({
+                        table: selectedTable,
+                        order: orders[0].order
+                    });
+
+                    Order.insertMany(newOrder, function(err) {
+                        if (err)
+                            console.log(err);
+                    });
+
                     res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
                 }
             });
@@ -391,8 +321,8 @@ app.post("/sidedish", function (req, res) {
 });
 
 app.post("/sidedish", function (req, res) {
-    var deleteItem = (req.body.remove);
     var newItemName = (req.body.add);
+    var deleteItem = (req.body.remove);
     var orderConfirm = (req.body.confirm);
 
     MongoClient.connect(url, function(err, db) {
@@ -406,17 +336,7 @@ app.post("/sidedish", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
-
                 List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
-                    if (!err) 
-                      res.redirect("/sidedish");
-                });
-                db.close();
-            }
-        });
-    });
-
-                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
                     if (err) 
                         console.log(err);
                 });
@@ -441,6 +361,17 @@ app.post("/sidedish", function (req, res) {
                     for (i = 0; i < orders[0].order.length; i++) {
                         total += orders[0].order[i].price;
                     }
+
+                    const newOrder = new List({
+                        table: selectedTable,
+                        order: orders[0].order
+                    });
+
+                    Order.insertMany(newOrder, function(err) {
+                        if (err)
+                            console.log(err);
+                    });
+
                     res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
                 }
             });
@@ -448,12 +379,10 @@ app.post("/sidedish", function (req, res) {
     } else {
         res.redirect("/sidedish");
     }
-
 });
 
 app.post("/sauce", function (req, res) {
     var newItemName = (req.body.add);
-
     var deleteItem = (req.body.remove);
     var orderConfirm = (req.body.confirm);
 
@@ -468,17 +397,7 @@ app.post("/sauce", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
-
                 List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
-                    if (!err) 
-                      res.redirect("/sauce");
-                });
-                db.close();
-            }
-        });
-    });
-
-                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
                     if (err) 
                         console.log(err);
                 });
@@ -503,6 +422,17 @@ app.post("/sauce", function (req, res) {
                     for (i = 0; i < orders[0].order.length; i++) {
                         total += orders[0].order[i].price;
                     }
+
+                    const newOrder = new List({
+                        table: selectedTable,
+                        order: orders[0].order
+                    });
+
+                    Order.insertMany(newOrder, function(err) {
+                        if (err)
+                            console.log(err);
+                    });
+
                     res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
                 }
             });
@@ -510,12 +440,10 @@ app.post("/sauce", function (req, res) {
     } else {
         res.redirect("/sauce");
     }
-
 });
 
 app.post("/drink", function (req, res) {
     var newItemName = (req.body.add);
-
     var deleteItem = (req.body.remove);
     var orderConfirm = (req.body.confirm);
 
@@ -531,19 +459,6 @@ app.post("/drink", function (req, res) {
                     order: result
                 });
                 List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
-                    if (!err) 
-                      res.redirect("/drink");
-                });
-                db.close();
-            }
-        });
-    });
-});
-
-app.get('/kitchen', function(req, res) {
-    res.render('kitchen');
-})
-                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
                     if (err) 
                         console.log(err);
                 });
@@ -568,6 +483,17 @@ app.get('/kitchen', function(req, res) {
                     for (i = 0; i < orders[0].order.length; i++) {
                         total += orders[0].order[i].price;
                     }
+
+                    const newOrder = new List({
+                        table: selectedTable,
+                        order: orders[0].order
+                    });
+
+                    Order.insertMany(newOrder, function(err) {
+                        if (err)
+                            console.log(err);
+                    });
+
                     res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
                 }
             });
@@ -577,6 +503,16 @@ app.get('/kitchen', function(req, res) {
     }
 });
 
+app.get('/kitchen', function(req, res) {
+    res.render('kitchen');
+});
+
+app.post('/kitchen', function (req, res) {
+    Order.find({}, function (err, list) {
+        res.render('order', { table: selectedTable, orderLists: list });
+    });
+});
+
 app.listen(8800, function() {
     console.log("Server started on port 8800");
-})
+});

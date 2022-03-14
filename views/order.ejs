@@ -1,0 +1,16 @@
+<%- include('partial/header2'); %>
+
+<form action="/kitchen" method="post">
+    <%  orderLists.forEach(function(e){ %>
+        <div class="orderlists">
+            <label id="ordertable"><%= e.table %></label>
+            <% for (var i = 0; i < e.order.length; i++) { %>
+                <div>
+                    <label id="statusqueue">Queue</label>
+                    <label id="ordername"><%= e.order[i].name %></label>
+                    <button id="updatecook" type="submit" name="cancel" value="">Cook</button>                    
+                </div>
+            <% } %>
+        </div>
+    <% }); %>
+</form>

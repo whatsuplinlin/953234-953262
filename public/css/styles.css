@@ -34,8 +34,6 @@ body {
     background-color: #1D7906;
 }
 
-
-
 .column #img {
     display: block;
     margin: auto;
@@ -47,6 +45,8 @@ body {
     margin: auto;
     margin-top: 100px;
 }
+
+
 
 p {
     font-size: 36px;
@@ -209,23 +209,23 @@ p {
 }
 
 #selected {
-    height: 1700px;
     border-right: #777777 solid 1px;
     border-left: #777777 solid 1px;
 }
 
 #orderlist {
-    height: 100px;
+    border-left: #777777 solid 1px;
 }
 
 
 
 .list {
-    width: 180px;
+    width: 170px;
     height: 170px;
     background-color: white;
     position: relative;
-    margin: 15px -5px;
+    margin: auto;
+    margin-top: 15px;
     border-radius: 8px;
     padding: 10px 15px;
 }
@@ -250,6 +250,7 @@ p {
     width: 100px;
     height: 25px;
     font-size: 16px;
+    font-weight: 500;
     color: white;
     background-color: #AE2012;
     border-radius: 30px;
@@ -260,10 +261,12 @@ p {
 }
 
 #request {
-    width: 180px;
+    width: 170px;
     height: 120px;
-    position: relative;
-    margin: 15px -5px;
+    display: block;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
     border: none;
     border-radius: 8px;
     padding: 10px;
@@ -273,42 +276,18 @@ p {
     width: 140px;
     height: 30px;
     font-size: 18px;
+    font-weight: 500;
     color: white;
     background-color: #EE9B00;
     border-radius: 30px;
     border: none;
-    position: relative;
-    margin: -5px 15px;
-}
-
-.form-control {
-    width: 300px;
-    height: 50px;
-    border-radius: 8px;
     display: block;
     margin: auto;
-    margin-bottom: 40px;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 
-.form-group {
-    margin-top: 80px;
-}
 
-.login {
-    width: 150px;
-    height: 40px;
-    font-family: "Lucida Grande", sans-serif;
-    font-size: 18px;
-    color: white;
-    background-color: #1D7906;
-    text-align: center;
-    border-radius: 30px;
-    border: none;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    display: block;
-    margin: auto;
-}
 
 .order {
     width: 350px;
@@ -396,4 +375,91 @@ p {
 
 #checkout:disabled {
     background-color: #777777;
+}
+
+
+
+.form-control {
+    width: 300px;
+    height: 50px;
+    border-radius: 8px;
+    display: block;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-top: 80px;
+}
+
+.login {
+    width: 150px;
+    height: 40px;
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 18px;
+    color: white;
+    background-color: #1D7906;
+    text-align: center;
+    border-radius: 30px;
+    border: none;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    display: block;
+    margin: auto;
+}
+
+
+
+.orderlists {
+    width: 90%;
+    background-color: #F7EDCF;
+    border-radius: 8px;
+    padding: 15px;
+    display: block;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#ordertable {
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 30px;
+}
+
+#statusqueue {
+    width: 100px;
+    height: 25px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+    padding: 1px;
+    color: white;
+    background-color: #AE2012;
+    border-radius: 30px;
+    border: none;
+    margin-top: 20px;
+}
+
+#ordername {
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 20px;
+    font-weight: 100;
+    display: block;
+    margin-left: 5px;
+}
+
+#updatecook {
+    width: 70px;
+    height: 25px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+    padding: 1px;
+    color: white;
+    background-color: #94D2BD;
+    border-radius: 30px;
+    border: none;
+    display: block;
+    float: right;
+    margin-top: -32px;
 }
