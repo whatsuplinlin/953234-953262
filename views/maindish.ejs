@@ -43,12 +43,15 @@
                     <label id="name"><%= orderLists[i].name %></label>
                     <label id="price"><%= orderLists[i].price %>B</label>
                     <button id="remove" type="submit" name="remove" value="<%= orderLists[i].name %>">remove</button>
+                    <button id="remove" type="submit" name="remove" value="<%= orderLists[i]._id %>">remove</button>
                 </div>
             <% } %>
                 
             <% if (orderLists.length > 0) { %>
                 <textarea id="request" type="text" name="request" placeholder="Type your request"></textarea>
-            <button id="confirm" type="submit" name="confirm">confirm</button>
+                <button id="confirm" type="submit" name="confirm">confirm</button>
+                <button id="confirm" type="submit" name="confirm" value="<%= table %>">confirm</button>
+
             <% } %>
 
         </div>
@@ -59,4 +62,8 @@
 
     </div>
 </form>
+            
+        </div>
+    </div>
+    </form>
 </body>

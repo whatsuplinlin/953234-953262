@@ -122,6 +122,11 @@ p {
     color: #AAAAAA;
 }
 
+
+.searchbar:disabled {
+    background-color: white;
+}
+
 .user {
     background-color: #F7EDCF;
     margin-top: 70px;
@@ -275,4 +280,93 @@ p {
     border: none;
     position: relative;
     margin: -5px 15px;
+
+}
+
+.order {
+    width: 350px;
+    height: 100px;
+    background-color: white;
+    position: relative;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 15px 20px;
+}
+
+#pricee {
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 16px;
+    font-weight: 100;
+    float: right;
+    position: absolute;
+    right: 20px;
+}
+
+#cancel {
+    width: 100px;
+    height: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    background-color: black;
+    border-radius: 30px;
+    border: none;
+    position: absolute;
+    top: 65px;
+    right: 130px;
+}
+
+#queue {
+    width: 100px;
+    height: 25px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+    padding: 1px;
+    color: white;
+    background-color: #AE2012;
+    border-radius: 30px;
+    border: none;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+}
+
+#total {
+    width: 350px;
+    height: 45px;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    font-family: "Lucida Grande", sans-serif;
+    padding: 10px 20px;
+    position: relative;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#totalprice {
+    float: right;
+}
+
+#checkout {
+    width: 330px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    background-color: #AE2012;
+    border-radius: 30px;
+    border: none;
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#checkout:disabled {
+    background-color: #777777;
 }
