@@ -47,13 +47,13 @@
                 
             <% if (orderLists.length > 0) { %>
                 <textarea id="request" type="text" name="request" placeholder="Type your request"></textarea>
-            <button id="confirm" type="submit" name="confirm">confirm</button>
+                <button id="confirm" type="submit" name="confirm" value="<%= table %>">confirm</button>
             <% } %>
-            
+
         </div>
         
         <div class="column col-md-4" id="orderlist">
-            <p class="title">Order List</p>
+            
         </div>
     </div>
 </form>

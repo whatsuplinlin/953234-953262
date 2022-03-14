@@ -261,6 +261,7 @@ app.get('/drink', function(req, res) {
 app.post("/maindish", function (req, res) {
     var newItemName = (req.body.add);
     var deleteItem = (req.body.remove);
+    var orderConfirm = (req.body.confirm);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -285,13 +286,31 @@ app.post("/maindish", function (req, res) {
             console.log(err);
     });
 
-    res.redirect("/maindish");
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
 
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/maindish");
+    }
 });
 
 app.post("/sidedish", function (req, res) {
     var deleteItem = (req.body.remove);
     var newItemName = (req.body.add);
+    var orderConfirm = (req.body.confirm);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -316,12 +335,31 @@ app.post("/sidedish", function (req, res) {
             console.log(err);
     });
 
-    res.redirect("/sidedish");
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/sidedish");
+    }
 });
 
 app.post("/sauce", function (req, res) {
     var newItemName = (req.body.add);
     var deleteItem = (req.body.remove);
+    var orderConfirm = (req.body.confirm);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -346,12 +384,31 @@ app.post("/sauce", function (req, res) {
             console.log(err);
     });
 
-    res.redirect("/sauce");
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/sauce");
+    }
 });
 
 app.post("/drink", function (req, res) {
     var newItemName = (req.body.add);
     var deleteItem = (req.body.remove);
+    var orderConfirm = (req.body.confirm);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -376,7 +433,25 @@ app.post("/drink", function (req, res) {
             console.log(err);
     });
 
-    res.redirect("/drink");
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/drink");
+    }
 });
 
 app.listen(8800, function() {
