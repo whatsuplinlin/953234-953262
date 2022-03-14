@@ -260,6 +260,84 @@ app.get('/drink', function(req, res) {
 
 app.post("/maindish", function (req, res) {
     var newItemName = (req.body.add);
+})
+
+app.get('/sidedish', function(req, res) {
+    Side.find({}, function (err, side) {
+        if (side.length === 0) {
+            Side.insertMany(sidedish, function(err) {
+                if (err)
+                    console.log(err);
+            });
+            res.redirect("/sidedish");
+        } else {
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('sidedish', { table: selectedTable, sideMenus: side, orderLists: order[0].order });
+                    }
+                });
+            });
+        }
+    });
+})
+
+app.get('/sauce', function(req, res) {
+    Sauce.find({}, function (err, sauce) {
+        if (sauce.length === 0) {
+            Sauce.insertMany(saucemenu, function(err) {
+                if (err)
+                    console.log(err);
+            });
+            res.redirect("/sauce")
+        } else {
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('sauce', { table: selectedTable, sauceMenus: sauce, orderLists: order[0].order });
+                    }
+                });
+            });
+        }
+    });
+})
+
+app.get('/drink', function(req, res) {
+    Drink.find({}, function (err, drink) {
+        if (drink.length === 0) {
+            Drink.insertMany(drinkmenu, function(err) {
+                if (err)
+                    console.log(err);
+            });
+            res.redirect("/drink")
+        } else {
+            MongoClient.connect(url, function(err, db) {
+                var dataBase = db.db("cluckcluckDB");
+            
+                dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, order) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        res.render('drink', { table: selectedTable, drinkMenus: drink, orderLists: order[0].order });
+                    }
+                });
+            });
+        }
+    });
+})
+
+app.post("/maindish", function (req, res) {
+    var newItemName = (req.body.add);
+    var deleteItem = (req.body.remove);
+    var orderConfirm = (req.body.confirm);
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -274,14 +352,49 @@ app.post("/maindish", function (req, res) {
                 List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
                     if (!err) 
                       res.redirect("/maindish");
+                    if (err) 
+                        console.log(err);
                 });
             }
         });
     });
+
 });
 
 app.post("/sidedish", function (req, res) {
     var newItemName = (req.body.add);
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/maindish");
+    }
+});
+
+app.post("/sidedish", function (req, res) {
+    var deleteItem = (req.body.remove);
+    var newItemName = (req.body.add);
+    var orderConfirm = (req.body.confirm);
+
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -293,6 +406,7 @@ app.post("/sidedish", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
+
                 List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
                     if (!err) 
                       res.redirect("/sidedish");
@@ -301,10 +415,48 @@ app.post("/sidedish", function (req, res) {
             }
         });
     });
+
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (err) 
+                        console.log(err);
+                });
+            }
+        });
+    });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/sidedish");
+    }
+
 });
 
 app.post("/sauce", function (req, res) {
     var newItemName = (req.body.add);
+
+    var deleteItem = (req.body.remove);
+    var orderConfirm = (req.body.confirm);
+
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -316,6 +468,7 @@ app.post("/sauce", function (req, res) {
                     table: selectedTable,
                     order: result
                 });
+
                 List.updateOne({ table: selectedTable }, { $push: { order: result} }, function (err) {
                     if (!err) 
                       res.redirect("/sauce");
@@ -324,10 +477,48 @@ app.post("/sauce", function (req, res) {
             }
         });
     });
+
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (err) 
+                        console.log(err);
+                });
+            }
+        });
+    });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/sauce");
+    }
+
 });
 
 app.post("/drink", function (req, res) {
     var newItemName = (req.body.add);
+
+    var deleteItem = (req.body.remove);
+    var orderConfirm = (req.body.confirm);
+
     MongoClient.connect(url, function(err, db) {
         var dataBase = db.db("cluckcluckDB");
         var query = { name: newItemName };
@@ -352,6 +543,39 @@ app.post("/drink", function (req, res) {
 app.get('/kitchen', function(req, res) {
     res.render('kitchen');
 })
+                List.updateOne({ table: selectedTable }, { $push: { order: result } }, function (err) {
+                    if (err) 
+                        console.log(err);
+                });
+            }
+        });
+    });
+
+    List.updateOne({ table: selectedTable }, { $pull: { order: { _id: deleteItem } } }, function (err) {
+        if (err) 
+            console.log(err);
+    });
+
+    if (orderConfirm === selectedTable) {
+        MongoClient.connect(url, function(err, db) {
+            var dataBase = db.db("cluckcluckDB");
+
+            dataBase.collection("lists").find({ table: selectedTable }).toArray(function (err, orders) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var total = 0;
+                    for (i = 0; i < orders[0].order.length; i++) {
+                        total += orders[0].order[i].price;
+                    }
+                    res.render('confirmed', { table: selectedTable, total: total, orderLists: orders[0].order });
+                }
+            });
+        })
+    } else {
+        res.redirect("/drink");
+    }
+});
 
 app.listen(8800, function() {
     console.log("Server started on port 8800");
