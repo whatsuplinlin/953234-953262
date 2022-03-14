@@ -1,0 +1,17 @@
+<%- include('partial/header2'); %>
+
+<%  orderLists.forEach(function(e){ %>
+    <div class="orderlists">
+        <label id="ordertable"><%= e.table %></label>
+
+        <% for (var i = 0; i < e.order.length; i++) { %>
+            <div>
+                <label id="statusqueue"><%= e.order[i].status %></label>
+                <label id="ordername"><%= e.order[i].name %></label>
+                <form action="/status" method="post">
+                    <button id="updatecook" type="submit" name="cook" value="<%= e.order[i].name %>"><%= e.order[i].next %></button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+<% }); %>

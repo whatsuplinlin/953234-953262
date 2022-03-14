@@ -1,0 +1,11 @@
+<%- include('partial/header2'); %>
+
+<p>Welcome! Please login to access to the kitchen</p>
+
+<form action="/kitchen" method="post">
+    <div class="form-group">
+      <input class="form-control" type="text" name="id" placeholder="ID">
+      <input class="form-control" type="password" name="pw" placeholder="Password">
+    </div>
+    <button class="login" type="submit" name="login">login</button>
+</form>
