@@ -349,6 +349,10 @@ app.post("/drink", function (req, res) {
     });
 });
 
+app.get('/kitchen', function(req, res) {
+    res.render('kitchen');
+})
+
 app.listen(8800, function() {
     console.log("Server started on port 8800");
 })
