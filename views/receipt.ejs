@@ -1,0 +1,19 @@
+<%- include('partial/header'); %>
+
+<div class="orderlists">
+    <label id="receipt">Receipt</label>
+
+    <% for (var i = 0; i < orderLists.length; i++) { %>
+        <div id="bill">
+            <label id="name"><%= orderLists[i].name %></label>
+            <label id="priceee"><%= orderLists[i].price %>B</label>
+        </div>
+    <% } %>
+
+    <div id="total2">
+        <label>Total</label>
+        <label id="totalprice"><%= total %>B</label>
+    </div>
+
+    <button id="payment" type="submit"><a href = "thankyou">Complete Payment</a></button>
+</div>

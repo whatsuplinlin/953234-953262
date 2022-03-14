@@ -361,8 +361,6 @@ p {
 #checkout {
     width: 330px;
     height: 30px;
-    font-size: 18px;
-    font-weight: 500;
     color: white;
     background-color: #AE2012;
     border-radius: 30px;
@@ -371,6 +369,11 @@ p {
     margin: auto;
     margin-top: 20px;
     margin-bottom: 30px;
+}
+
+#checkout, a {
+    font-size: 18px;
+    font-weight: 500;
 }
 
 #checkout:disabled {
@@ -414,7 +417,7 @@ p {
     width: 90%;
     background-color: #F7EDCF;
     border-radius: 8px;
-    padding: 15px;
+    padding: 15px 10px 15px 15px;
     display: block;
     margin: auto;
     margin-top: 40px;
@@ -446,6 +449,7 @@ p {
     font-weight: 100;
     display: block;
     margin-left: 5px;
+    padding: 20px 0;
 }
 
 #updatecook {
@@ -462,4 +466,78 @@ p {
     display: block;
     float: right;
     margin-top: -32px;
+}
+
+#receipt {
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 36px;
+    display: block;
+    text-align: center;
+}
+
+#bill {
+    width: 100%;
+    background-color: white;
+    position: relative;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 15px 20px;
+}
+
+#priceee {
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 18px;
+    font-weight: 100;
+    float: right;
+    position: absolute;
+    top: 18px;
+    right: 20px;
+}
+
+#total2 {
+    width: 100%;
+    height: 45px;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    font-family: "Lucida Grande", sans-serif;
+    padding: 10px 20px;
+    position: relative;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#payment {
+    width: 300px;
+    height: 40px;
+    font-size: 18px;
+    background-color: #0A9396;
+    border: none;
+    border-radius: 30px;
+    display: block;
+    margin: auto;
+    padding: 5px;
+    margin-top: 30px;
+}
+
+
+
+#chicken {
+    width: 250px;
+    height: 280px;
+    display: block;
+    margin: auto;
+    margin-top: 100px;
+}
+
+#thankyou {
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 50px;
+    font-weight: 800;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
 }
