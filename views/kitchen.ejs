@@ -7,5 +7,12 @@
       <input class="form-control" type="text" name="id" placeholder="ID">
       <input class="form-control" type="password" name="pw" placeholder="Password">
     </div>
-    <button class="login" type="submit">confirm</button>
-  </form>
+    <button class="login" type="submit" name="login">login</button>
+</form>
+
+<script type="text/javascript">
+  var err = <%= error %>;
+  if (err) {
+      alert('ID or password is incorrect, please try again')
+  }
+</script>

@@ -29,12 +29,20 @@ const listSchema = new mongoose.Schema({
     order: [menuSchema]
 });
 
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+});
+
 const Main = mongoose.model("main", menuSchema);
 const Side = mongoose.model("side", menuSchema);
 const Sauce = mongoose.model("sauce", menuSchema);
 const Drink = mongoose.model("drink", menuSchema);
 const List = mongoose.model("list", listSchema);
 const Order = mongoose.model("orderlist", listSchema);
+const User = mongoose.model("User", userSchema);
+
+User.insertMany({ username: 'cluckitchen', password: 'cluckcluck'});
 
 const main1 = new Main({
     name: "Fried Chicken",
@@ -504,13 +512,26 @@ app.post("/drink", function (req, res) {
 });
 
 app.get('/kitchen', function(req, res) {
-    res.render('kitchen');
+    res.render('kitchen', { error: false });
 });
 
 app.post('/kitchen', function (req, res) {
-    Order.find({}, function (err, list) {
-        res.render('order', { table: selectedTable, orderLists: list });
-    });
+    var userId = (req.body.id)
+    var userPw = (req.body.pw)
+
+    MongoClient.connect(url, function (err, db) {
+        var dataBase = db.db('cluckcluckDB');
+
+        dataBase.collection('users').find().toArray(function (err, login) {
+            if (login[0].username === userId && login[0].password === userPw) {
+                Order.find({}, function (err, list) {
+                    res.render('order', { table: selectedTable, orderLists: list });
+                });
+            } else {
+                res.render('kitchen', { error: true });
+            }
+        })
+    })
 });
 
 app.listen(8800, function() {
