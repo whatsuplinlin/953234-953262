@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+  project:
+    image: whatsuplinlin/finalproject-prod:latest
+    ports:
+      - "8116:3000"
