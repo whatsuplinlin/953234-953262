@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+  project:
+    image: whatsuplinlin:latest
+    ports:
+      - "8888:3000"
